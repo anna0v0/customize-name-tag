@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./admin-auth.css";
 
 export const metadata: Metadata = {
   title: "Form & Fable — Custom Name Tags",

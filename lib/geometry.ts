@@ -24,7 +24,7 @@ const vectorFonts:Record<DesignConfig["font"],Parameters<FontLoader["parse"]>[0]
   Jaro:jaro,
   "Poppins ExtraBold":poppinsExtraBold,
 };
-function selectedFont(font:DesignConfig["font"]):Font{return fontLoader.parse(vectorFonts[font])}
+function selectedFont(font:DesignConfig["font"]):Font{return fontLoader.parse(vectorFonts[font]||helvetiker)}
 function polygon(points:Point[]){const s=new Shape();points.forEach((p,i)=>i?s.lineTo(p.x,p.y):s.moveTo(p.x,p.y));s.closePath();return s}
 function sampled(shape:Shape){const p=shape.extractPoints(10);return {outer:p.shape.map(v=>({x:v.x,y:v.y})),holes:p.holes.map(h=>h.map(v=>({x:v.x,y:v.y})))}}
 function circle(cx:number,cy:number,r:number){const s=new Shape();s.absarc(cx,cy,r,0,Math.PI*2,false);return s}
