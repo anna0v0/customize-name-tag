@@ -8,7 +8,9 @@ export const SPECS = { maxWidth: 80, maxHeight: 30, baseDepth: 3, faceDepth: 2, 
 
 export type DesignConfig = {
   name: string; font: typeof FONTS[number]; baseColor: string; topColor: string;
-  icon: "star" | "heart" | "flower" | "upload"; iconDataUrl?: string; iconAssetId?: string; templateVersion: "1";
+  icon: "star" | "heart" | "flower" | "upload"; iconDataUrl?: string; iconAssetId?: string;
+  iconScale?: number;
+  iconContours?: Array<{group:number;hole:boolean;points:Array<{x:number;y:number}>}>; templateVersion: "1";
 };
 
 export function layoutFor(name: string) {

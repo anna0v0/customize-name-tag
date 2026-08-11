@@ -1,5 +1,5 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { browserLocalPersistence, getAuth, initializeAuth } from "firebase/auth";
 
 const firebaseConfig={
   apiKey:process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,4 +11,10 @@ const firebaseConfig={
 };
 
 export const firebaseApp=getApps().length?getApp():initializeApp(firebaseConfig);
-export const firebaseAuth=getAuth(firebaseApp);
+export const firebaseAuth=(()=>{
+  try {
+    return initializeAuth(firebaseApp,{persistence:browserLocalPersistence});
+  } catch {
+    return getAuth(firebaseApp);
+  }
+})();

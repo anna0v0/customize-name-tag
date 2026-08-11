@@ -27,6 +27,14 @@ export async function getOrders(): Promise<StoredOrder[]> {
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
+export async function getOrder(id: string): Promise<StoredOrder | null> {
+  if (firebaseAdminIsConfigured()) {
+    const snapshot = await getFirebaseAdmin().db.collection("orders").doc(id).get();
+    return snapshot.exists ? snapshot.data() as StoredOrder : null;
+  }
+  return (await localOrders()).find(order => order.id === id) ?? null;
+}
+
 export async function saveOrder(order: StoredOrder) {
   if (firebaseAdminIsConfigured()) {
     await getFirebaseAdmin().db.collection("orders").doc(order.id).set(firestoreOrder(order));
