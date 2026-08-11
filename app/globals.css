@@ -457,6 +457,30 @@ nav {
     opacity: .45
 }
 
+.order-continue {
+    background: var(--ink);
+    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease
+}
+
+.order-continue span {
+    transition: transform .18s ease
+}
+
+.order-continue:not(:disabled):hover {
+    background: #090a08;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 0 #c9c2b6
+}
+
+.order-continue:not(:disabled):hover span {
+    transform: translateX(4px)
+}
+
+.order-continue:not(:disabled):active {
+    transform: translateY(0);
+    box-shadow: 0 3px 0 #c9c2b6
+}
+
 .error {
     background: #f1d2cd;
     padding: 10px;
