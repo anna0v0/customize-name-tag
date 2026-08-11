@@ -1,0 +1,2 @@
+import { NextResponse } from "next/server";import { designSchema } from "@/lib/schema";import { layoutFor } from "@/lib/config";
+export async function POST(req:Request){const p=designSchema.safeParse(await req.json());if(!p.success)return NextResponse.json({valid:false,error:"Check the name and design options."},{status:400});const l=layoutFor(p.data.name);return NextResponse.json({valid:l.minFeature>=.8,dimensionsMm:{width:l.width,height:l.height,depth:5},scale:l.scale,minFeatureMm:l.minFeature});}

@@ -1,0 +1,3 @@
+import { NextResponse } from "next/server";import { updateOrder, OrderStatus } from "@/lib/store";
+const statuses:OrderStatus[]=["Submitted","Generating","Pending Review","Awaiting Customer Approval","Confirmed","In Production","Completed","Manual Review Required","Cancelled"];
+export async function PATCH(req:Request,{params}:{params:Promise<{id:string}>}){const {id}=await params;const {status}=await req.json();if(!statuses.includes(status))return NextResponse.json({error:"Invalid status"},{status:400});const o=await updateOrder(id,status);return o?NextResponse.json(o):NextResponse.json({error:"Not found"},{status:404})}

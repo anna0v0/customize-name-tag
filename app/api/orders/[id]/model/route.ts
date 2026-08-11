@@ -1,0 +1,2 @@
+import { promises as fs } from "fs";import path from "path";import { NextResponse } from "next/server";
+export async function GET(_:Request,{params}:{params:Promise<{id:string}>}){const {id}=await params;if(!/^FF-\d{4}-[A-Z0-9]{6}$/.test(id))return new NextResponse("Not found",{status:404});try{const data=await fs.readFile(path.join(process.cwd(),".data","models",`${id}.3mf`));return new NextResponse(data,{headers:{"content-type":"model/3mf","content-disposition":`attachment; filename="${id}.3mf"`}})}catch{return new NextResponse("Model is not ready",{status:404})}}

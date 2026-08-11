@@ -1,0 +1,3 @@
+import { NextRequest,NextResponse } from "next/server";
+export function middleware(req:NextRequest){const password=process.env.ADMIN_PASSWORD;if(!password)return NextResponse.next();const protectedRequest=req.nextUrl.pathname.startsWith('/admin')||req.nextUrl.pathname.includes('/model')||req.method==='PATCH'||(req.nextUrl.pathname==='/api/orders'&&req.method==='GET');if(!protectedRequest)return NextResponse.next();const header=req.headers.get('authorization');const expected='Basic '+btoa(`admin:${password}`);if(header!==expected)return new NextResponse('Admin access required',{status:401,headers:{'WWW-Authenticate':'Basic realm="Form & Fable Production"'}});return NextResponse.next()}
+export const config={matcher:['/admin/:path*','/api/orders/:path*']};
