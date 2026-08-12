@@ -3,11 +3,12 @@ export const COLORS = [
   { name: "Cherry", value: "#dc5047" }, { name: "Sage", value: "#7e9a82" },
   { name: "Sky", value: "#7fa8c9" }, { name: "Marigold", value: "#e0a72e" },
 ];
-export const FONTS = ["Gochi Hand", "Block", "Soft", "Classic", "Permanent Marker", "Jua", "Jaro", "Poppins ExtraBold"] as const;
-export const SPECS = { maxWidth: 80, maxHeight: 30, baseDepth: 3, faceDepth: 2, holeDiameter: 5, targetTextHeight: 16, minFeature: 0.8, outline: 3, margin: 3 };
+export const FONTS = ["Gochi Hand", "Soft", "Classic", "Permanent Marker", "Jua", "Jaro", "Poppins ExtraBold"] as const;
+export type FontId = typeof FONTS[number] | "Block";
+export const SPECS = { maxWidth: 80, maxHeight: 30, baseDepth: 3, faceDepth: 2, holeDiameter: 5, targetTextHeight: 16, iconSize: 6.24, minFeature: 0.8, outline: 3, margin: 3 };
 
 export type DesignConfig = {
-  name: string; font: typeof FONTS[number]; baseColor: string; topColor: string;
+  name: string; font: FontId; baseColor: string; topColor: string;
   icon: "star" | "heart" | "flower" | "upload"; iconDataUrl?: string; iconAssetId?: string;
   iconScale?: number;
   avatarSelection?: import("./avatar").AvatarSelection;
