@@ -35,6 +35,48 @@
     font-display: swap
 }
 
+@font-face {
+    font-family: 'Darumadrop One Local';
+    src: url('/fonts/DarumadropOne-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-display: swap
+}
+
+@font-face {
+    font-family: 'Caveat Brush Local';
+    src: url('/fonts/CaveatBrush-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-display: swap
+}
+
+@font-face {
+    font-family: 'Cherry Bomb One Local';
+    src: url('/fonts/CherryBombOne-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-display: swap
+}
+
+@font-face {
+    font-family: 'East Sea Dokdo Local';
+    src: url('/fonts/EastSeaDokdo-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-display: swap
+}
+
+@font-face {
+    font-family: 'Sour Gummy Bold Local';
+    src: url('/fonts/SourGummy-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-display: swap
+}
+
+@font-face {
+    font-family: 'Bungee Local';
+    src: url('/fonts/Bungee-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-display: swap
+}
+
 .hero-art {
     width: clamp(190px, 25vw, 460px);
     height: auto;
@@ -46,7 +88,7 @@
 
 :root {
     --ink: #22231f;
-    --paper: #f2eee5;
+    --paper: #f2f2f2;
     --cream: #e9e1d2;
     --red: #d95043;
     --line: #b8b1a4
@@ -175,10 +217,8 @@ nav {
 }
 
 .maker {
-    background: #ded8cd;
+    background: #ececec;
     padding: 72px 5vw 88px;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line)
 }
 
 .section-head {
@@ -206,7 +246,7 @@ nav {
 
 .studio {
     display: grid;
-    grid-template-columns: minmax(290px, 360px) 1fr;
+    grid-template-columns: minmax(290px, 460px) 1fr;
     border: 1px solid #8f8b82;
     background: var(--paper);
     min-height: 690px
@@ -227,8 +267,8 @@ nav {
 }
 
 .field>span, .orderform label {
-    font-size: 10px;
-    letter-spacing: .13em;
+    font-size: 11px;
+    letter-spacing: .1em;
     font-weight: 700
 }
 
@@ -237,10 +277,12 @@ nav {
     place-items: center;
     background: var(--red);
     color: white;
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    margin-right: 9px
+    margin-right: 9px;
+    font-weight: 300;
+    font-size: 12px;
 }
 
 .field small {
@@ -252,7 +294,7 @@ nav {
     border: 1px solid var(--ink);
     display: flex;
     align-items: center;
-    background: #faf8f3
+    background: #fafafa
 }
 
 .textinput input {
@@ -270,13 +312,17 @@ nav {
 
 .fontgrid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line)
 }
 
 .fontgrid button {
     background: transparent;
-    border: 1px solid var(--line);
+    border: 0;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
     padding: 8px 4px
 }
 
@@ -290,7 +336,12 @@ nav {
     font-size: 8px
 }
 
-.fontgrid .selected, .icons .selected {
+.fontgrid .selected {
+    background: #fff;
+    box-shadow: inset 0 0 0 2px var(--red)
+}
+
+.icons .selected {
     border: 2px solid var(--red);
     background: #fff
 }
@@ -377,23 +428,69 @@ nav {
     cursor: pointer
 }
 
-.avatar-create {
-    width: 100%;
-    margin-top: 10px;
-    padding: 11px 12px;
-    border: 1px solid var(--ink);
-    background: var(--ink);
-    color: #fff;
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .12em
+.icon-choices {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--line)
 }
 
-.avatar-create:hover {
-    background: var(--red);
-    border-color: var(--red)
+.icon-choice {
+    min-height: 72px;
+    padding: 10px;
+    border: 0;
+    background: transparent;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 5px
+}
+
+.icon-choice+.icon-choice {
+    border-left: 1px solid var(--line)
+}
+
+.icon-choice:nth-child(4n+1) {
+    border-left: 0
+}
+
+.icon-choice:nth-child(n+5) {
+    border-top: 1px solid var(--line)
+}
+
+.icon-choice strong {
+    font-size: 26px;
+    line-height: 1
+}
+
+.icon-choice img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain
+}
+
+.icon-choice.selected img {
+    filter: invert(1)
+}
+
+.icon-choice small {
+    color: inherit;
+    font-size: 8px;
+    letter-spacing: .1em;
+    margin-top: 2px;
+}
+
+.icon-choice:hover {
+    background: #dddddd
+}
+
+.icon-choice.selected {
+    background: var(--ink);
+    color: white
+}
+
+.avatar-choice {
+    grid-column: 1 / -1;
+    border-left: 0 !important
 }
 
 .avatar-remove {
@@ -426,7 +523,7 @@ nav {
     border: 1px solid var(--ink);
     display: flex;
     flex-direction: column;
-    box-shadow: 12px 12px 0 rgba(0,0,0,.22)
+    box-shadow: 12px 12px 0 rgba(0, 0, 0, .22)
 }
 
 .avatar-modal>header {
@@ -606,16 +703,56 @@ nav {
 }
 
 .canvas {
+    position: relative;
     height: 440px;
     border: 1px solid #aaa;
-    background: #d9d5cb
+    background: #eeeeee
+}
+
+.preview-loading {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 12px;
+    background: rgba(226, 226, 226, 0.72);
+    backdrop-filter: blur(2px);
+    color: var(--ink)
+}
+
+.preview-loading span {
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(34, 35, 31, .2);
+    border-top-color: var(--ink);
+    border-radius: 50%;
+    animation: preview-spin .75s linear infinite
+}
+
+.preview-loading strong {
+    font-size: 9px;
+    letter-spacing: .14em
+}
+
+@keyframes preview-spin {
+    to {
+        transform: rotate(360deg)
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .preview-loading span {
+        animation-duration: 1.8s
+    }
 }
 
 .loading {
     height: 440px;
     display: grid;
     place-items: center;
-    background: #d9d5cb
+    background: rgba(226, 226, 226, 0.72);
 }
 
 .preview-note {
@@ -630,44 +767,6 @@ nav {
 .preview-note span:last-child {
     text-align: right;
     max-width: 440px
-}
-
-.specbar {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    border: 1px solid var(--line);
-    margin: 5px 0 18px
-}
-
-.specbar div {
-    padding: 12px;
-    border-right: 1px solid var(--line)
-}
-
-.specbar div:last-child {
-    border: 0
-}
-
-.specbar small, .specbar strong {
-    display: block
-}
-
-.specbar small {
-    font-size: 8px;
-    letter-spacing: .1em
-}
-
-.specbar strong {
-    font: 600 15px 'Fraunces', serif;
-    margin-top: 4px
-}
-
-.specbar .pass {
-    background: #dbe5d6
-}
-
-.specbar .warn {
-    background: #f1d2cd
 }
 
 .continue {
@@ -886,6 +985,31 @@ footer small {
     font-weight: 800 !important
 }
 
+.font-darumadrop-one {
+    font-family: 'Darumadrop One Local', sans-serif !important
+}
+
+.font-caveat-brush {
+    font-family: 'Caveat Brush Local', cursive !important
+}
+
+.font-cherry-bomb-one {
+    font-family: 'Cherry Bomb One Local', sans-serif !important
+}
+
+.font-east-sea-dokdo {
+    font-family: 'East Sea Dokdo Local', cursive !important
+}
+
+.font-sour-gummy-bold {
+    font-family: 'Sour Gummy Bold Local', sans-serif !important;
+    font-weight: 700 !important
+}
+
+.font-bungee {
+    font-family: 'Bungee Local', sans-serif !important
+}
+
 @media(max-width:850px) {
     .avatar-backdrop {
         padding: 0
@@ -958,8 +1082,9 @@ footer small {
     }
 
     .controls {
+        order: 2;
         border-right: 0;
-        border-bottom: 1px solid #8f8b82
+        border-bottom: 0
     }
 
     .section-head {
@@ -971,23 +1096,13 @@ footer small {
     }
 
     .preview-wrap {
-        padding: 16px
+        order: 1;
+        padding: 16px;
+        border-bottom: 1px solid #8f8b82
     }
 
     .canvas, .loading {
         height: 350px
-    }
-
-    .specbar {
-        grid-template-columns: 1fr 1fr
-    }
-
-    .specbar div:nth-child(2) {
-        border-right: 0
-    }
-
-    .specbar div {
-        border-bottom: 1px solid var(--line)
     }
 
     .preview-note {
@@ -1115,7 +1230,7 @@ footer small {
     text-transform: uppercase;
     letter-spacing: .05em;
     padding: 6px 8px;
-    background: #d9d5cb
+    background: #eeeeee
 }
 
 .status.pending-review {
