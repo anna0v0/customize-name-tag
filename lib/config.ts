@@ -4,12 +4,13 @@ export const COLORS = [
   { name: "Sky", value: "#7fa8c9" }, { name: "Marigold", value: "#e0a72e" },
 ];
 export const FONTS = ["Gochi Hand", "Block", "Soft", "Classic", "Permanent Marker", "Jua", "Jaro", "Poppins ExtraBold"] as const;
-export const SPECS = { maxWidth: 80, maxHeight: 30, baseDepth: 3, faceDepth: 2, holeDiameter: 5, targetTextHeight: 16, minFeature: 0.8, outline: 3.5, margin: 3.5 };
+export const SPECS = { maxWidth: 80, maxHeight: 30, baseDepth: 3, faceDepth: 2, holeDiameter: 5, targetTextHeight: 16, minFeature: 0.8, outline: 3, margin: 3 };
 
 export type DesignConfig = {
   name: string; font: typeof FONTS[number]; baseColor: string; topColor: string;
   icon: "star" | "heart" | "flower" | "upload"; iconDataUrl?: string; iconAssetId?: string;
   iconScale?: number;
+  avatarSelection?: import("./avatar").AvatarSelection;
   iconContours?: Array<{group:number;hole:boolean;points:Array<{x:number;y:number}>}>; templateVersion: "1";
 };
 

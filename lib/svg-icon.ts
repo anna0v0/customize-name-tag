@@ -37,7 +37,7 @@ export function parseSvgIcon(svg: string): SvgIconContour[] {
     const visit=(node:ClipperLib.PolyNode,parentGroup?:number)=>{const hole=node.IsHole();const group=hole&&parentGroup!==undefined?parentGroup:groups++;if(Math.abs(ClipperLib.Clipper.Area(node.Contour()))>4*SCALE)raw.push({group,hole,path:node.Contour()});for(const child of node.Childs())visit(child,group)};
     for(const node of tree.Childs())visit(node);
     if(!raw.length)throw new Error("No printable vector region was found in this SVG.");
-    if(groups>12)throw new Error("This SVG is too complex. Use no more than 12 separate regions.");
+    if(groups>32)throw new Error("This SVG is too complex. Use no more than 32 separate regions.");
     const all=raw.flatMap(item=>item.path);const minX=Math.min(...all.map(p=>p.X)),maxX=Math.max(...all.map(p=>p.X)),minY=Math.min(...all.map(p=>p.Y)),maxY=Math.max(...all.map(p=>p.Y));const span=Math.max(maxX-minX,maxY-minY);
     return raw.map(item=>({group:item.group,hole:item.hole,points:item.path.map(p=>({x:((p.X-(minX+maxX)/2)/span)*2,y:(((minY+maxY)/2-p.Y)/span)*2}))}));
   } catch(error) {

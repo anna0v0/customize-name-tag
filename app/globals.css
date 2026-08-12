@@ -261,7 +261,6 @@ nav {
     padding: 13px;
     width: 100%;
     font-size: 17px;
-    text-transform: uppercase;
     outline: 0
 }
 
@@ -376,6 +375,216 @@ nav {
     width: 100%;
     accent-color: var(--ink);
     cursor: pointer
+}
+
+.avatar-create {
+    width: 100%;
+    margin-top: 10px;
+    padding: 11px 12px;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em
+}
+
+.avatar-create:hover {
+    background: var(--red);
+    border-color: var(--red)
+}
+
+.avatar-remove {
+    margin-top: 8px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #777;
+    font-size: 9px;
+    letter-spacing: .1em;
+    text-decoration: underline
+}
+
+.avatar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(30, 31, 34, .72);
+    backdrop-filter: blur(5px)
+}
+
+.avatar-modal {
+    width: min(1050px, 100%);
+    max-height: calc(100vh - 48px);
+    overflow: hidden;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 12px 12px 0 rgba(0,0,0,.22)
+}
+
+.avatar-modal>header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--line)
+}
+
+.avatar-modal header small {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .16em
+}
+
+.avatar-modal header h2 {
+    margin: 3px 0 0;
+    font: 400 36px/1 'Fraunces', serif
+}
+
+.avatar-modal header button {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--line);
+    background: transparent;
+    font-size: 26px
+}
+
+.avatar-workspace {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    overflow: hidden
+}
+
+.avatar-preview-panel {
+    padding: 24px;
+    border-right: 1px solid var(--line);
+    background: #ded9cf
+}
+
+.avatar-preview {
+    aspect-ratio: 1;
+    background: white;
+    border: 1px solid var(--line)
+}
+
+.avatar-preview svg {
+    width: 100%;
+    height: 100%;
+    --line: #111;
+    --skin: #fff;
+    --skin-dot: #111;
+    --hair: #222
+}
+
+.avatar-preview-panel p {
+    margin: 14px 0 0;
+    color: #666;
+    font-size: 11px;
+    line-height: 1.5
+}
+
+.avatar-options {
+    min-width: 0;
+    overflow: auto;
+    padding: 20px
+}
+
+.avatar-tabs {
+    display: flex;
+    gap: 6px;
+    padding-bottom: 14px;
+    overflow-x: auto
+}
+
+.avatar-tabs button {
+    flex: 0 0 auto;
+    padding: 8px 11px;
+    border: 1px solid var(--line);
+    background: transparent;
+    font-size: 10px;
+    letter-spacing: .06em
+}
+
+.avatar-tabs button.active {
+    background: var(--ink);
+    color: white
+}
+
+.avatar-parts {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px
+}
+
+.avatar-parts button {
+    aspect-ratio: 1;
+    min-width: 0;
+    padding: 3px;
+    overflow: hidden;
+    border: 1px solid #aaa;
+    background: #dedbd4
+}
+
+.avatar-parts button.active {
+    border: 3px solid var(--red);
+    background: white
+}
+
+.avatar-parts svg {
+    width: 100%;
+    height: 100%;
+    --line: #111;
+    --skin: #fff;
+    --skin-dot: #111;
+    --hair: #222
+}
+
+.avatar-modal>footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px
+}
+
+.avatar-modal>footer button {
+    padding: 12px 18px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em
+}
+
+.avatar-cancel {
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-text-fill-color: var(--ink)
+}
+
+.avatar-cancel:hover,
+.avatar-cancel:focus-visible {
+    border-color: var(--ink);
+    background: var(--cream)
+}
+
+.avatar-apply {
+    min-width: 190px;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: white
+}
+
+.avatar-apply:disabled {
+    opacity: .55
 }
 
 .preview-wrap {
@@ -678,6 +887,56 @@ footer small {
 }
 
 @media(max-width:850px) {
+    .avatar-backdrop {
+        padding: 0
+    }
+
+    .avatar-modal {
+        width: 100%;
+        max-height: 100vh;
+        min-height: 100vh;
+        border: 0
+    }
+
+    .avatar-workspace {
+        display: flex;
+        flex-direction: column;
+        overflow: auto
+    }
+
+    .avatar-preview-panel {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        padding: 14px
+    }
+
+    .avatar-preview {
+        width: min(220px, 62vw);
+        margin: auto
+    }
+
+    .avatar-preview-panel p {
+        display: none
+    }
+
+    .avatar-options {
+        overflow: visible
+    }
+
+    .avatar-parts {
+        grid-template-columns: repeat(4, 1fr)
+    }
+
+    .avatar-modal>footer {
+        margin-top: auto;
+        flex: 0 0 auto;
+        padding: 12px
+    }
+
+    .avatar-modal>footer button {
+        flex: 1
+    }
+
     .navlinks {
         display: none
     }
