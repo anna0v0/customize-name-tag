@@ -34,6 +34,12 @@ export async function getOrder(id: string): Promise<StoredOrder | null> {
   return (await localOrders()).find(order => order.id === id) ?? null;
 }
 
+export async function getOrdersByEmail(email: string): Promise<StoredOrder[]> {
+  const normalized = email.trim().toLowerCase();
+  if (!normalized) return [];
+  return (await getOrders()).filter(order => order.email.trim().toLowerCase() === normalized);
+}
+
 export async function saveOrder(order: StoredOrder) {
   if (firebaseAdminIsConfigured()) {
     await getFirebaseAdmin().db.collection("orders").doc(order.id).set(firestoreOrder(order));
