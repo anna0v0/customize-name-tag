@@ -6,7 +6,9 @@ export const designSchema = z.object({
   icon: z.enum(["star","heart","flower","cat","paw","cloud","file","thunder","bow-tie","crown","upload"]), iconScale: z.number().min(.7).max(1.5).optional(), avatarSelection: avatarSelectionSchema.optional(), iconDataUrl: z.string().optional(), iconAssetId: z.string().regex(/^[a-f0-9-]{36}$/).optional(),
   iconContours: z.array(z.object({group:z.number().int().min(0).max(31),hole:z.boolean(),points:z.array(z.object({x:z.number().min(-1.1).max(1.1),y:z.number().min(-1.1).max(1.1)})).min(3).max(2000)})).max(96).optional(), templateVersion: z.literal("1")
 });
+export const orderItemSchema = z.object({ design: designSchema, quantity: z.number().int().min(1).max(100) });
 export const orderSchema = z.object({
   customerName: z.string().min(2).max(80), email: z.string().email(), phone: z.string().min(6).max(30),
-  quantity: z.number().int().min(1).max(100), notes: z.string().max(500), consent: z.literal(true), design: designSchema
-});
+  quantity: z.number().int().min(1).max(100).optional(), notes: z.string().max(500), consent: z.literal(true), design: designSchema.optional(),
+  items: z.array(orderItemSchema).min(1).max(10).optional()
+}).superRefine((value,ctx)=>{if(!value.items&&!value.design)ctx.addIssue({code:"custom",message:"Add at least one design to your order."})});

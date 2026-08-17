@@ -1,10 +1,13 @@
-type Product = {name:string;description:string;meta:string;status:string;visual:string;href?:string};
+import { NAME_TAG_UNIT_PRICE } from "@/lib/pricing";
+
+type Product = {name:string;description:string;meta:string;status:string;visual:string;price?:number;href?:string};
 
 const products:Product[] = [
   {
     name: "Custom Name Tag",
     description: "Create a two-colour 3D printed tag with your name, favourite icon or a custom avatar.",
     meta: "",
+    price: NAME_TAG_UNIT_PRICE,
     href: "/name-tag",
     status: "AVAILABLE",
     visual: "MILO",
@@ -83,7 +86,7 @@ export default function LandingPage() {
           const content=<>
             <div className="product-card-top"><span>0{index+1}</span><small>{product.status}</small></div>
             <div className={`product-visual product-visual-${index+1}`}>{index===0?<NameTagProductVisual/>:<span>{product.visual}</span>}</div>
-            <div className="product-card-copy"><small>{product.meta}</small><h3>{product.name}</h3><p>{product.description}</p><strong>{product.href?"CUSTOMISE NOW →":"NOTIFY ME LATER"}</strong></div>
+            <div className="product-card-copy"><small>{product.meta}</small><h3>{product.name}</h3><p>{product.description}</p>{product.price&&<div className="product-price"><b>HK${product.price}</b><span>EACH</span></div>}<strong>{product.href?"CUSTOMISE NOW →":"NOTIFY ME LATER"}</strong></div>
           </>;
           return product.href
             ? <a className="product-card available" href={product.href} key={product.name}>{content}</a>
