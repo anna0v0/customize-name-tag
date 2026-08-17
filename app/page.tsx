@@ -58,7 +58,7 @@ export default function LandingPage() {
   return <main className="landing">
     <nav>
       <a className="brand" href="/">FORM <i>&</i> FABLE</a>
-      <div className="navlinks"><a href="#products">PRODUCTS</a><a href="#about">ABOUT</a></div>
+      <div className="navlinks"><a href="#products">PRODUCTS</a><a href="#about">ABOUT</a><a href="/order-status">ORDER STATUS</a></div>
     </nav>
 
     <header className="landing-hero">
