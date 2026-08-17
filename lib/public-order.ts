@@ -2,6 +2,9 @@ import type { StoredOrder } from "./store";
 import { NAME_TAG_UNIT_PRICE, ORDER_CURRENCY } from "./pricing";
 import type { DesignConfig } from "./config";
 import { designSchema } from "./schema";
+import type { OrganizerDesignConfig } from "./organizer";
+
+export type PublicDesign=DesignConfig|OrganizerDesignConfig;
 
 export type PublicOrderSummary = {
   orderId:string;
@@ -10,12 +13,13 @@ export type PublicOrderSummary = {
   quantity:number;
   totalAmount:number;
   currency:string;
-  designs:Array<{name:string;quantity:number;design:DesignConfig}>;
+  designs:Array<{name:string;quantity:number;design:PublicDesign}>;
 };
 
-function publicDesign(source:Record<string,unknown>):DesignConfig {
+function publicDesign(source:Record<string,unknown>):PublicDesign {
   const parsed=designSchema.safeParse(source);
   if(parsed.success){
+    if("productType" in parsed.data)return parsed.data;
     const {iconDataUrl:_,iconAssetId:__,avatarSelection:___,...design}=parsed.data;
     return design;
   }

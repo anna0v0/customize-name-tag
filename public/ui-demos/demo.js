@@ -13,7 +13,7 @@ function render(){
  document.title=`${s.name} — UI Demo`;
  document.body.className=s.classes;
  document.querySelector('#app').innerHTML=`
- <header><a class="brand" href="./">FORM <i>&</i> FABLE</a><nav><a href="#design">DESIGN</a><a href="#how">HOW IT WORKS</a></nav><button class="nav-cta">BESPOKE 3D PRINTS</button></header>
+ <header><a class="brand" href="./">THE <span class="brand-accent">ODDMENT</span> CLUB</a><nav><a href="#design">DESIGN</a><a href="#how">HOW IT WORKS</a></nav><button class="nav-cta">BESPOKE 3D PRINTS</button></header>
  <main><section class="intro"><div><span class="kicker">STYLE ${s.tag} · UI CONCEPT</span><h1>${s.name}</h1><p>${s.sub}</p></div><a class="switch" href="./">VIEW ALL STYLES ↗</a></section>
  <section class="builder" id="design">
   <aside class="controls">

@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { COLORS, FONTS, DesignConfig, layoutFor } from "@/lib/config";
 import { NAME_TAG_UNIT_PRICE } from "@/lib/pricing";
 import type {AvatarSelection} from "@/lib/avatar";
+import { addToCart } from "@/lib/cart";
 
 const Preview3D = dynamic(() => import("@/components/Preview3D"), { ssr:false, loading:()=> <div className="loading">Building your preview…</div> });
 const AvatarMaker = dynamic(() => import("@/components/AvatarMaker"), { ssr:false });
@@ -35,7 +36,7 @@ export default function NameTagDesigner(){
   window.setTimeout(()=>document.querySelector(`[data-mobile-stage="${stage}"]`)?.scrollIntoView({behavior:"smooth",block:"start"}),40);
  }
  function goToMaker(){window.setTimeout(()=>document.getElementById("maker")?.scrollIntoView({behavior:"smooth",block:"start"}),30)}
- function addCurrent(){if(!design.name)return;const item={id:editingId??crypto.randomUUID(),design:{...design},quantity:editingId?cart.find(entry=>entry.id===editingId)?.quantity??1:1};setCart(items=>editingId?items.map(entry=>entry.id===editingId?item:entry):[...items,item]);setEditingId(null);setStep("cart");goToMaker()}
+ function addCurrent(){if(!design.name)return;addToCart({...design},1);window.location.href="/your-order"}
  function editItem(item:CartItem){setDesign({...item.design});setEditingId(item.id);setStep("design");setMobileStage(0);goToMaker()}
  function removeItem(id:string){setCart(items=>items.filter(item=>item.id!==id))}
  function changeItemQuantity(id:string,quantity:number){setCart(items=>items.map(item=>item.id===id?{...item,quantity:Math.max(1,Math.min(100,quantity||1))}:item))}
@@ -45,7 +46,7 @@ export default function NameTagDesigner(){
  function designAnother(){setCart([]);setEditingId(null);setStep("design");setMobileStage(0);setOrderId("");window.scrollTo({top:0,behavior:"smooth"})}
  async function submit(e:React.FormEvent<HTMLFormElement>){e.preventDefault();if(!cart.length)return;setBusy(true);setError("");const f=new FormData(e.currentTarget);const quantity=cart.reduce((total,item)=>total+item.quantity,0);const payload={customerName:f.get("customerName"),email:f.get("email"),phone:f.get("phone"),items:cart.map(item=>({design:item.design,quantity:item.quantity})),notes:f.get("notes"),consent:f.get("consent")=== "on"};const res=await fetch("/api/orders",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(payload)});const data=await res.json();setBusy(false);if(!res.ok){setError(data.error||"We could not submit your order.");return;}localStorage.removeItem(DRAFT_STORAGE_KEY);setOrderId(data.orderId);setOrderQuantity(quantity);setOrderTotal(data.totalAmount??quantity*NAME_TAG_UNIT_PRICE);setStep("done");}
  return <main>
-  <nav><a className="brand" href="/">FORM <i>&</i> FABLE</a><div className="navlinks"><a href="#maker">DESIGN</a><a href="#how">HOW IT WORKS</a><a href="/order-status">ORDER STATUS</a></div><a className="bag" href="/">VIEW ALL PRODUCTS</a></nav>
+  <nav><a className="brand" href="/">THE <span className="brand-accent">ODDMENT</span> CLUB</a><div className="navlinks"><a href="/#products">PRODUCTS</a><a href="/about">ABOUT</a><a href="/order-status">ORDER STATUS</a></div></nav>
   <header className="hero"><div><h1>Your name,<br/><em>made tangible.</em></h1></div><img className="hero-art" src="/images/roro-magic.png" alt="Roro Magic"/></header>
   <section id="maker" className="maker">
    <div className="section-head"><span>01</span><h2>Make it yours</h2></div>
@@ -77,7 +78,7 @@ export default function NameTagDesigner(){
   <section id="how" className="how"><p className="eyebrow">FROM IDEA TO OBJECT</p>
   {/* <h2>Made slowly.<br/><em>Kept for years.</em></h2> */}
   <div className="steps"><article><b>01</b><h3>Design</h3><p>Choose your name, typeface, colours and a simple icon.</p></article><article><b>02</b><h3>Order & pay</h3><p>Place your order at HK${NAME_TAG_UNIT_PRICE} each and pay with PayMe.</p></article><article><b>03</b><h3>Print</h3><p>Your tag is reviewed, printed in two colours and carefully finished by hand.</p></article></div></section>
-  <footer><span>FORM & FABLE</span><p>Small objects. Big personality.</p><small>© 2026 · MADE IN HONG KONG</small></footer>
+  <footer><span>THE <span className="brand-accent">ODDMENT</span> CLUB</span><p>Small objects. Big personality.</p><small>© 2026 · MADE IN HONG KONG</small></footer>
   {avatarOpen&&<AvatarMaker initial={design.avatarSelection} onCancel={()=>setAvatarOpen(false)} onApply={applyAvatar}/>}
  </main>
 }

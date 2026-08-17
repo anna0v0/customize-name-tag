@@ -3,7 +3,7 @@ import "./globals.css";
 import "./admin-auth.css";
 
 export const metadata: Metadata = {
-  title: "Form & Fable — Custom Name Tags",
+  title: "The Oddment Club — Custom 3D Printed Objects",
   description: "Design a one-of-a-kind 3D printed name tag.",
 };
 
