@@ -4,7 +4,7 @@ import { firebaseAdminIsConfigured, getFirebaseAdmin } from "./firebase-admin";
 
 export type OrderStatus = "Submitted"|"Generating"|"Pending Review"|"Awaiting Customer Approval"|"Confirmed"|"In Production"|"Completed"|"Manual Review Required"|"Cancelled";
 export type StoredOrderItem = { design:Record<string, unknown>; quantity:number };
-export type StoredOrder = { id:string; createdAt:string; status:OrderStatus; customerName:string; email:string; phone:string; quantity:number; unitPrice?:number; totalAmount?:number; currency?:"HKD"; notes:string; design:Record<string, unknown>; items?:StoredOrderItem[] };
+export type StoredOrder = { id:string; createdAt:string; status:OrderStatus; customerName:string; email:string; phone:string; shippingMethod?:"sf-express"|"local-mail"; shippingLabel?:string; shippingFee?:number; quantity:number; unitPrice?:number; subtotal?:number; totalAmount?:number; currency?:"HKD"; notes:string; design:Record<string, unknown>; items?:StoredOrderItem[] };
 
 const dataDir = path.join(process.cwd(), ".data");
 const orderFile = path.join(dataDir, "orders.json");

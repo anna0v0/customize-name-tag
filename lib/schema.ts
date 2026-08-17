@@ -11,6 +11,7 @@ export const designSchema=z.union([nameTagDesignSchema,organizerDesignSchema]);
 export const orderItemSchema = z.object({ design: designSchema, quantity: z.number().int().min(1).max(100) });
 export const orderSchema = z.object({
   customerName: z.string().min(2).max(80), email: z.string().email(), phone: z.string().min(6).max(30),
+  shippingMethod: z.enum(["sf-express","local-mail"]),
   quantity: z.number().int().min(1).max(100).optional(), notes: z.string().max(500), consent: z.literal(true), design: designSchema.optional(),
   items: z.array(orderItemSchema).min(1).max(10).optional()
 }).superRefine((value,ctx)=>{if(!value.items&&!value.design)ctx.addIssue({code:"custom",message:"Add at least one design to your order."})});

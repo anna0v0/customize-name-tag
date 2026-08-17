@@ -47,9 +47,9 @@ export default function NameTagDesigner(){
  async function submit(e:React.FormEvent<HTMLFormElement>){e.preventDefault();if(!cart.length)return;setBusy(true);setError("");const f=new FormData(e.currentTarget);const quantity=cart.reduce((total,item)=>total+item.quantity,0);const payload={customerName:f.get("customerName"),email:f.get("email"),phone:f.get("phone"),items:cart.map(item=>({design:item.design,quantity:item.quantity})),notes:f.get("notes"),consent:f.get("consent")=== "on"};const res=await fetch("/api/orders",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(payload)});const data=await res.json();setBusy(false);if(!res.ok){setError(data.error||"We could not submit your order.");return;}localStorage.removeItem(DRAFT_STORAGE_KEY);setOrderId(data.orderId);setOrderQuantity(quantity);setOrderTotal(data.totalAmount??quantity*NAME_TAG_UNIT_PRICE);setStep("done");}
  return <main>
   <nav><a className="brand" href="/">THE <span className="brand-accent">ODDMENT</span> CLUB</a><div className="navlinks"><a href="/#products">PRODUCTS</a><a href="/about">ABOUT</a><a href="/order-status">ORDER STATUS</a></div></nav>
-  <header className="hero"><div><h1>Your name,<br/><em>made tangible.</em></h1></div><img className="hero-art" src="/images/roro-magic.png" alt="Roro Magic"/></header>
+  <header className="hero"><div><h1 className="product-title">Your name,<br/><em>made tangible.</em></h1></div><img className="hero-art" src="/images/roro-magic.png" alt="Roro Magic"/></header>
   <section id="maker" className="maker">
-   <div className="section-head"><span>01</span><h2>Make it yours</h2></div>
+   <div className="section-head"><span>01</span><h2>Design Your Name Tag</h2></div>
    {step==="done" ? <div className="success success-order-page">
     <header className="success-order-header"><div className="success-mark">✓</div><div><p className="eyebrow">ORDER CONFIRMED</p><h2>Your order is in.</h2><p>Your total is confirmed. Complete the PayMe payment below and we’ll prepare your order for production.</p></div></header>
     <div className="success-order-grid">

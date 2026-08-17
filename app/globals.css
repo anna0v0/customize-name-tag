@@ -133,9 +133,9 @@ nav {
 }
 
 .brand {
-    font-family: 'Poppins ExtraBold Local', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 18px;
-    font-weight: 800;
+    font-weight: 400;
     text-decoration: none;
     letter-spacing: .06em;
     white-space: nowrap
@@ -148,7 +148,8 @@ footer>span {
 }
 
 .brand-accent {
-    color: #ff782f
+    color: #ff782f;
+    font-weight: 800
 }
 
 .brand i {
@@ -159,6 +160,7 @@ footer>span {
 
 .navlinks {
     display: flex;
+    align-items: center;
     gap: 34px
 }
 
@@ -248,7 +250,7 @@ nav .navlinks a[href="/order-status"]:hover {
 
 .section-head {
     display: grid;
-    grid-template-columns: 70px 1fr auto;
+    grid-template-columns: 50px 1fr auto;
     align-items: flex-end;
     margin-bottom: 35px
 }
@@ -260,7 +262,7 @@ nav .navlinks a[href="/order-status"]:hover {
 }
 
 .section-head h2 {
-    font: 400 48px/1 'Fraunces', serif;
+    font: 400 45px/1 'Fraunces', serif;
     margin: 0
 }
 
@@ -810,7 +812,7 @@ nav .navlinks a[href="/order-status"]:hover {
 .about-intro h1 {
     margin: 18px 0 42px;
     max-width: 950px;
-    font: 800 clamp(58px, 9vw, 132px)/.87 'Poppins ExtraBold Local', sans-serif;
+    font: 800 clamp(58px, 9vw, 100px)/.87 'Poppins ExtraBold Local', sans-serif;
     letter-spacing: -.07em
 }
 
@@ -821,17 +823,13 @@ nav .navlinks a[href="/order-status"]:hover {
 
 .about-copy {
     max-width: 690px;
-    color: #b2b6b8;
-    font-size: clamp(18px, 2vw, 24px);
+    color: #ddd;
+    font-size: clamp(18px, 2vw, 18px);
     line-height: 1.55
 }
 
 .about-copy p {
-    margin: 0 0 14px
-}
-
-.about-intro .landing-primary {
-    margin-top: 38px
+    margin: 0 0 14px;
 }
 
 @media (max-width: 700px) {
@@ -1447,6 +1445,11 @@ footer small {
     font-size: 10px;
     letter-spacing: .13em;
     font-weight: 700;
+}
+
+.hero h1.product-title {
+    font-size: clamp(56px, 7vw, 85px);
+
 }
 
 @media(max-width:850px) {
@@ -2905,6 +2908,81 @@ footer small {
     width: 20px
 }
 
+.shipping-options {
+    margin: 4px 0 28px;
+    padding: 0;
+    border: 0
+}
+
+.shipping-options legend {
+    margin-bottom: 12px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .1em
+}
+
+.shared-details .shipping-options label {
+    display: grid;
+    grid-template-columns: 22px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    min-height: 78px;
+    margin: -1px 0 0;
+    padding: 15px 18px;
+    border: 1px solid var(--line);
+    cursor: pointer
+}
+
+.shared-details .shipping-options label.selected {
+    position: relative;
+    z-index: 1;
+    border-color: #ff782f;
+    background: rgba(255, 120, 47, .08)
+}
+
+.shipping-options input {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    accent-color: #ff782f
+}
+
+.shipping-options span {
+    display: flex;
+    flex-direction: column;
+    gap: 5px
+}
+
+.shipping-options b,
+.shipping-options strong {
+    font-size: 13px
+}
+
+.shipping-options small {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0
+}
+
+.checkout-breakdown {
+    margin-top: 28px;
+    border: 1px solid var(--line)
+}
+
+.checkout-breakdown>div {
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--line);
+    font-size: 11px;
+    letter-spacing: .08em
+}
+
+.checkout-breakdown>div:last-child {
+    border-bottom: 0
+}
+
 .confirmed-page {
     width: min(1050px, 90vw);
     margin: auto;
@@ -2921,6 +2999,18 @@ footer small {
     background: var(--main);
     color: #111;
     font-size: 30px
+}
+
+.confirmed-shipping {
+    display: flex;
+    justify-content: space-between;
+    width: min(680px, 100%);
+    margin: 28px auto -1px;
+    padding: 16px 20px;
+    border: 1px solid var(--line);
+    font-size: 12px;
+    letter-spacing: .06em;
+    text-align: left
 }
 
 .confirmed-page h1 {
@@ -3190,7 +3280,7 @@ footer small {
 
 .product-heading h2 {
     margin: 14px 0 0;
-    font: 800 clamp(44px, 5vw, 76px)/.95 'Poppins ExtraBold Local', sans-serif;
+    font: 800 clamp(44px, 4vw, 76px)/.95 'Poppins ExtraBold Local', sans-serif;
     letter-spacing: -.055em
 }
 
@@ -3299,7 +3389,7 @@ footer small {
 }
 
 .product-card-copy p {
-    margin: 0 0 26px;
+    margin: 0 0 30px;
     color: var(--lab-muted);
     line-height: 1.6
 }
@@ -3313,8 +3403,7 @@ footer small {
 }
 
 .product-price b {
-    font: 800 28px/1 'Poppins ExtraBold Local', sans-serif;
-    letter-spacing: -.03em
+    font: 800 30px/1 'Poppins ExtraBold Local', sans-serif;
 }
 
 .product-price span {

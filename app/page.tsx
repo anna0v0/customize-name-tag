@@ -69,8 +69,8 @@ export default function LandingPage() {
     <header className="landing-hero">
       <div className="landing-copy">
         <p className="eyebrow">MADE IN HONG KONG</p>
-        <h1>Make it personal.<br/><em>Print it real.</em></h1>
-        <p>Create something that’s uniquely yours.</p>
+        <h1>Make it personal．<br/><em>Print it real</em></h1>
+        <p>Create something that’s uniquely yours</p>
         <a className="landing-primary" href="#products"><span>SELECT A PRODUCT</span><b>↓</b></a>
       </div>
       <div className="landing-object" aria-hidden="true">
@@ -89,7 +89,7 @@ export default function LandingPage() {
       <div className="product-grid">
         {products.map((product,index)=>{
           const content=<>
-            <div className="product-card-top"><span>0{index+1}</span></div>
+            <div className="product-card-top"><span>0{index+1} -</span></div>
             <div className={`product-visual product-visual-${index+1}`}>{index===0?<NameTagProductVisual/>:index===1?<OrganizerProductVisual/>:<span>{product.visual}</span>}</div>
             <div className="product-card-copy"><small>{product.meta}</small><h3>{product.name}</h3><p>{product.description}</p>{product.price&&<div className="product-price"><b>HK${product.price}</b><span>{product.priceLabel??"EACH"}</span></div>}<strong>{product.href?"ORDER NOW →":"NOTIFY ME LATER"}</strong></div>
           </>;

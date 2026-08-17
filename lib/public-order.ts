@@ -13,6 +13,8 @@ export type PublicOrderSummary = {
   quantity:number;
   totalAmount:number;
   currency:string;
+  shippingLabel?:string;
+  shippingFee?:number;
   designs:Array<{name:string;quantity:number;design:PublicDesign}>;
 };
 
@@ -35,6 +37,8 @@ export function toPublicOrderSummary(order:StoredOrder):PublicOrderSummary {
     quantity:order.quantity,
     totalAmount:order.totalAmount??order.quantity*(order.unitPrice??NAME_TAG_UNIT_PRICE),
     currency:order.currency??ORDER_CURRENCY,
+    shippingLabel:order.shippingLabel,
+    shippingFee:order.shippingFee,
     designs:items.map(item=>({name:String(item.design.name??"Custom name tag"),quantity:item.quantity,design:publicDesign(item.design)})),
   };
 }
