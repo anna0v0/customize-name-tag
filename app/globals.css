@@ -898,7 +898,7 @@ nav {
 }
 
 .how {
-    padding: 100px 8vw
+    padding: 80px 8vw
 }
 
 .how h2 {
@@ -1136,7 +1136,8 @@ nav {
     grid-template-columns: auto 48px;
     align-items: center;
     gap: 7px;
-    font-size: 8px
+    font-size: 8px;
+    margin-bottom: 0px;
 }
 
 .order-cart article input {
@@ -1169,6 +1170,27 @@ nav {
 
 .customer-title {
     margin-top: 4px
+}
+
+.checkout-summary {
+    margin: 22px 0 10px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--line)
+}
+
+.checkout-summary span {
+    color: var(--lab-muted);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .12em
+}
+
+.checkout-summary b {
+    font-size: 18px;
+    letter-spacing: -.02em
 }
 
 .order-next-steps {
@@ -2044,7 +2066,7 @@ footer small {
 }
 
 .product-price b {
-    font: 800 25px/1 'Poppins ExtraBold Local', sans-serif;
+    font: 800 28px/1 'Poppins ExtraBold Local', sans-serif;
     letter-spacing: -.03em
 }
 
@@ -2058,7 +2080,7 @@ footer small {
     margin-top: auto;
     color: var(--main);
     font-size: 9px;
-    letter-spacing: .12em
+    letter-spacing: .12em;
 }
 
 .product-card.available {
@@ -2807,8 +2829,20 @@ footer {
 
 .statusselect select {
     padding: 13px;
-    background: #faf8f3;
-    border: 1px solid var(--line)
+    background: var(--lab-field);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    color-scheme: dark
+}
+
+.statusselect select:focus {
+    border-color: var(--main);
+    outline: 1px solid var(--main)
+}
+
+.statusselect option {
+    background: var(--lab-field);
+    color: var(--ink)
 }
 
 .emptydetail {
