@@ -2073,7 +2073,7 @@ footer small {
 
 .lookup-meta {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     border-bottom: 1px solid var(--line)
 }
 
@@ -2392,9 +2392,10 @@ footer small {
 
 .organizer-hero h1 {
     margin: 15px 0 24px;
-    font-size: clamp(62px, 8vw, 128px);
+    font-size: clamp(62px, 6vw, 128px);
     line-height: .88;
-    letter-spacing: -.06em
+    letter-spacing: -.06em;
+    font-family: 'Poppins ExtraBold Local', sans-serif;
 }
 
 .organizer-hero h1 em {
@@ -2708,12 +2709,13 @@ footer small {
     justify-content: space-between;
     align-items: flex-end;
     gap: 25px;
-    margin-bottom: 35px
+    margin-bottom: 35px;
+    margin-top: 10px;
 }
 
 .shared-title h1 {
     margin: 8px 0 0;
-    font-size: clamp(52px, 7vw, 100px);
+    font-size: clamp(52px, 7vw, 75px);
     line-height: .9;
     letter-spacing: -.05em
 }
@@ -2730,7 +2732,7 @@ footer small {
 
 .platform-cart article {
     display: grid;
-    grid-template-columns: 50px minmax(260px, 380px) 1fr 95px 120px;
+    grid-template-columns: 50px minmax(260px, 300px) 1fr 95px 120px;
     align-items: center;
     gap: 24px;
     padding: 24px;
@@ -2764,7 +2766,7 @@ footer small {
 
 .platform-cart-copy h2 {
     margin: 6px 0;
-    font-size: 35px
+    font-size: 32px
 }
 
 .platform-cart-copy p {
@@ -2803,14 +2805,37 @@ footer small {
 
 .add-product {
     display: block;
-    margin-top: 28px;
     padding: 24px;
     border: 1px solid var(--line);
     color: var(--ink);
     text-align: center;
     text-decoration: none;
-    font-weight: 800;
     letter-spacing: .08em
+}
+
+.cart-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 28px;
+    font-size: 14px;
+}
+
+.cart-actions .add-product:first-child {
+    border-color: #ff782f;
+    color: #ff782f
+}
+
+.cart-actions .add-product:hover {
+    border-color: #ff782f;
+    background: #ff782f;
+    color: #101315
+}
+
+@media (max-width: 700px) {
+    .cart-actions {
+        grid-template-columns: 1fr
+    }
 }
 
 .shared-total {
@@ -2835,7 +2860,8 @@ footer small {
     justify-content: center;
     gap: 15px;
     color: #111;
-    text-decoration: none
+    text-decoration: none;
+    font-size: 14px;
 }
 
 .cart-empty {
@@ -2886,11 +2912,17 @@ footer small {
 
 .shared-details input, .shared-details textarea {
     padding: 17px;
-    border: 1px solid var(--line);
+    border: 1px solid #525252;
     border-radius: 0;
     background: var(--lab-field);
     color: var(--ink);
     font: inherit
+}
+
+.shared-details input:focus, .shared-details input:focus-visible,
+.shared-details textarea:focus, .shared-details textarea:focus-visible {
+    border: 1px solid var(--main);
+    outline: 0px;
 }
 
 .shared-details textarea {
@@ -2900,8 +2932,9 @@ footer small {
 .shared-details .check {
     flex-direction: row;
     align-items: center;
-    font-size: 12px;
-    letter-spacing: 0
+    font-size: 13px;
+    letter-spacing: 0;
+    font-weight: 300;
 }
 
 .shared-details .check input {
@@ -2975,7 +3008,7 @@ footer small {
     justify-content: space-between;
     padding: 13px 16px;
     border-bottom: 1px solid var(--line);
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: .08em
 }
 
@@ -3555,7 +3588,7 @@ footer small {
     --lab-panel: #1d2022;
     --lab-panel-deep: #171a1c;
     --lab-muted: #9ba1a3;
-    --lab-field: #111315
+    --lab-field: #222
 }
 
 body {

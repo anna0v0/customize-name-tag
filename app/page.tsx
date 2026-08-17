@@ -42,17 +42,17 @@ function NameTagProductVisual() {
       <g fill="#8b8d8b" stroke="#8b8d8b" strokeWidth="34" strokeLinejoin="round">
         <path d="M102 132h31M177 132h36" fill="none" strokeWidth="24" strokeLinecap="round"/>
         <use href="#product-flower" transform="translate(106 93) scale(.22)" strokeWidth={flowerOutlineWidth}/>
-        <text x="201" y="174" fontFamily="'Permanent Marker Local', cursive" fontSize="112" fontWeight="700" letterSpacing="-6">Milo</text>
+        <text x="201" y="174" fontFamily="'Permanent Marker Local', cursive" fontSize="112" fontWeight="700" letterSpacing="-6">Kate</text>
       </g>
     </g>
     <g className="product-tag-base" fill="#f2f1ed" stroke="#f2f1ed" strokeWidth="34" strokeLinejoin="round">
       <circle cx="74" cy="140" r="28" fill="none" strokeWidth="18"/>
       <use href="#product-flower" transform="translate(106 93) scale(.22)" strokeWidth={flowerOutlineWidth}/>
-      <text x="201" y="174" fontFamily="'Permanent Marker Local', cursive" fontSize="112" fontWeight="700" letterSpacing="-6">Milo</text>
+      <text x="201" y="174" fontFamily="'Permanent Marker Local', cursive" fontSize="112" fontWeight="700" letterSpacing="-6">Kate</text>
     </g>
     <g className="product-tag-face" fill="#17191a">
       <use href="#product-flower" transform="translate(106 93) scale(.22)"/>
-      <text x="201" y="174" fontFamily="'Permanent Marker Local', cursive" fontSize="112" fontWeight="700" letterSpacing="-6">Milo</text>
+      <text x="201" y="174" fontFamily="'Permanent Marker Local', cursive" fontSize="112" fontWeight="700" letterSpacing="-6">Kate</text>
     </g>
   </svg>;
 }
