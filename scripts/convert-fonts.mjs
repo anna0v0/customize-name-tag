@@ -8,6 +8,12 @@ const fonts=[
   ["Jua-Regular.ttf","jua.typeface.json"],
   ["Jaro-Regular.ttf","jaro.typeface.json"],
   ["Poppins-ExtraBold.ttf","poppins-extrabold.typeface.json"],
+  ["DarumadropOne-Regular.ttf","darumadrop-one.typeface.json"],
+  ["CaveatBrush-Regular.ttf","caveat-brush.typeface.json"],
+  ["CherryBombOne-Regular.ttf","cherry-bomb-one.typeface.json"],
+  ["EastSeaDokdo-Regular.ttf","east-sea-dokdo.typeface.json"],
+  ["SourGummy-Bold.ttf","sour-gummy-bold.typeface.json"],
+  ["Bungee-Regular.ttf","bungee.typeface.json"],
 ];
 const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ?-";
 const round=n=>Math.round(n*100)/100;

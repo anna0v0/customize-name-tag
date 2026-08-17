@@ -3,7 +3,8 @@ import path from "node:path";
 import { firebaseAdminIsConfigured, getFirebaseAdmin } from "./firebase-admin";
 
 export type OrderStatus = "Submitted"|"Generating"|"Pending Review"|"Awaiting Customer Approval"|"Confirmed"|"In Production"|"Completed"|"Manual Review Required"|"Cancelled";
-export type StoredOrder = { id:string; createdAt:string; status:OrderStatus; customerName:string; email:string; phone:string; quantity:number; notes:string; design:Record<string, unknown> };
+export type StoredOrderItem = { design:Record<string, unknown>; quantity:number };
+export type StoredOrder = { id:string; createdAt:string; status:OrderStatus; customerName:string; email:string; phone:string; quantity:number; unitPrice?:number; totalAmount?:number; currency?:"HKD"; notes:string; design:Record<string, unknown>; items?:StoredOrderItem[] };
 
 const dataDir = path.join(process.cwd(), ".data");
 const orderFile = path.join(dataDir, "orders.json");
@@ -13,10 +14,8 @@ async function localOrders(): Promise<StoredOrder[]> {
 }
 
 function firestoreOrder(order: StoredOrder): StoredOrder {
-  if (!order.design.iconAssetId) return order;
-  const design = { ...order.design };
-  delete design.iconDataUrl;
-  return { ...order, design };
+  const clean=(source:Record<string,unknown>)=>{const design={...source};if(design.iconAssetId)delete design.iconDataUrl;return design};
+  return { ...order, design:clean(order.design), items:order.items?.map(item=>({...item,design:clean(item.design)})) };
 }
 
 export async function getOrders(): Promise<StoredOrder[]> {
@@ -25,6 +24,14 @@ export async function getOrders(): Promise<StoredOrder[]> {
   return snapshot.docs
     .map(doc => doc.data() as StoredOrder)
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+export async function getOrder(id: string): Promise<StoredOrder | null> {
+  if (firebaseAdminIsConfigured()) {
+    const snapshot = await getFirebaseAdmin().db.collection("orders").doc(id).get();
+    return snapshot.exists ? snapshot.data() as StoredOrder : null;
+  }
+  return (await localOrders()).find(order => order.id === id) ?? null;
 }
 
 export async function saveOrder(order: StoredOrder) {
