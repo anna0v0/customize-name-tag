@@ -1,5 +1,5 @@
 export const COLORS = [
-  { name: "Ink", value: "#1e1f22" }, { name: "Chalk", value: "#f4f0e7" },
+  { name: "Ink", value: "#111111" }, { name: "Chalk", value: "#FFFFFF" },
   { name: "Cherry", value: "#dc5047" }, { name: "Sage", value: "#7e9a82" },
   { name: "Sky", value: "#7fa8c9" }, { name: "Marigold", value: "#e0a72e" },
 ];
