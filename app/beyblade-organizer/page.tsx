@@ -1,13 +1,15 @@
 "use client";
-import { useMemo,useState } from "react";
+import { useEffect,useMemo,useState } from "react";
 import dynamic from "next/dynamic";
 import { COLORS } from "@/lib/config";
 import { ORGANIZER_VARIANTS,organizerVariant,type OrganizerDesignConfig } from "@/lib/organizer";
 import { addToCart } from "@/lib/cart";
+import { trackCommerce } from "@/lib/analytics";
 
 const Preview=dynamic(()=>import("@/components/OrganizerPreview3D"),{ssr:false,loading:()=> <div className="loading">Building your organizer…</div>});
 
 export default function OrganizerPage(){
+ useEffect(()=>{trackCommerce("product_viewed",{productType:"beyblade-organizer"});trackCommerce("customizer_started",{productType:"beyblade-organizer"})},[]);
  const [variantId,setVariantId]=useState("sample-organizer");const [color,setColor]=useState("#1e1f22");const [quantity,setQuantity]=useState(1);
  const variant=organizerVariant(variantId);const design=useMemo<OrganizerDesignConfig>(()=>({productType:"beyblade-organizer",variant:variant.id,name:variant.name,color,width:variant.width,depth:variant.depth,height:variant.height,price:variant.price,templateVersion:"1"}),[variant,color]);const total=quantity*variant.price;
  function addOrganizer(){addToCart(design,quantity);window.location.href="/your-order"}

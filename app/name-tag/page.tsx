@@ -5,6 +5,7 @@ import { COLORS, FONTS, DesignConfig, layoutFor } from "@/lib/config";
 import { NAME_TAG_UNIT_PRICE } from "@/lib/pricing";
 import type {AvatarSelection} from "@/lib/avatar";
 import { addToCart } from "@/lib/cart";
+import { trackCommerce } from "@/lib/analytics";
 
 const Preview3D = dynamic(() => import("@/components/Preview3D"), { ssr:false, loading:()=> <div className="loading">Building your preview…</div> });
 const AvatarMaker = dynamic(() => import("@/components/AvatarMaker"), { ssr:false });
@@ -23,6 +24,7 @@ export default function NameTagDesigner(){
  const layout=useMemo(()=>layoutFor(design.name,design.iconScale),[design.name,design.iconScale]);
  const cartQuantity=useMemo(()=>cart.reduce((sum,item)=>sum+item.quantity,0),[cart]);
  const cartTotal=cartQuantity*NAME_TAG_UNIT_PRICE;
+ useEffect(()=>{trackCommerce("product_viewed",{productType:"name-tag"});trackCommerce("customizer_started",{productType:"name-tag"})},[]);
  useEffect(()=>{try{const saved=localStorage.getItem(DRAFT_STORAGE_KEY);if(saved){const draft=JSON.parse(saved) as {design?:DesignConfig;cart?:CartItem[];step?:Step};if(draft.design&&typeof draft.design.name==="string")setDesign(draft.design);if(Array.isArray(draft.cart))setCart(draft.cart.filter(item=>item&&typeof item.id==="string"&&typeof item.quantity==="number"&&typeof item.design?.name==="string"));if(draft.step==="cart"||draft.step==="design")setStep(draft.step)}}catch{}finally{setDraftReady(true)}},[]);
  useEffect(()=>{if(!draftReady||step==="done")return;try{localStorage.setItem(DRAFT_STORAGE_KEY,JSON.stringify({design,cart,step:step==="details"?"cart":step}))}catch{}},[design,cart,step,draftReady]);
  function patch<K extends keyof DesignConfig>(key:K,value:DesignConfig[K]){setDesign(d=>({...d,[key]:value}));}

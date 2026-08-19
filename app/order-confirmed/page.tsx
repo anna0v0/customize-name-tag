@@ -1,5 +1,2 @@
-"use client";
-import { useEffect,useState } from "react";
-import { RECEIPT_STORAGE_KEY } from "@/lib/cart";
-type Receipt={orderId:string;totalAmount:number;subtotal:number;shippingMethod:"sf-express"|"local-mail";shippingFee:number;quantity:number};
-export default function OrderConfirmedPage(){const [receipt,setReceipt]=useState<Receipt|null>(null);useEffect(()=>{try{setReceipt(JSON.parse(sessionStorage.getItem(RECEIPT_STORAGE_KEY)||"null"))}catch{}},[]);return <main className="shared-checkout"><nav><a className="brand" href="/">THE <span className="brand-accent">ODDMENT</span> CLUB</a><a className="bag" href="/order-status">ORDER STATUS</a></nav><section className="confirmed-page"><span>✓</span><p className="eyebrow">ORDER CONFIRMED</p><h1>Your order is in.</h1>{receipt?<><p>Order reference: <b>{receipt.orderId}</b></p><div className="confirmed-shipping"><span>SHIPPING</span><b>{receipt.shippingMethod==="sf-express"?"SF Express — Pay on delivery":"Local mail"} · HK${receipt.shippingFee}</b></div><div className="confirmed-payment"><div><small>TOTAL DUE</small><strong>HK${receipt.totalAmount}</strong><p>Scan the PayMe QR code and enter <b>{receipt.orderId}</b> in the payment message.</p></div><img src="/images/payme-qr.png" alt="PayMe payment QR code"/></div><a href="/order-status">CHECK ORDER STATUS →</a></>:<><p>Your order has been submitted.</p><a href="/order-status">CHECK ORDER STATUS →</a></>}</section></main>}
+import { redirect } from "next/navigation";
+export default function RetiredConfirmationPage(){redirect("/your-order")}

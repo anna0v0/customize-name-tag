@@ -1,8 +1,9 @@
 import { NAME_TAG_UNIT_PRICE } from "@/lib/pricing";
+import { getShopifyCatalog } from "@/lib/shopify";
 
 type Product = {name:string;description:string;meta:string;status:string;visual:string;price?:number;priceLabel?:string;href?:string};
 
-const products:Product[] = [
+const fallbackProducts:Product[] = [
   {
     name: "Custom Name Tag",
     description: "Create a two-colour 3D printed tag with your name, favourite icon or a custom avatar.",
@@ -59,8 +60,12 @@ function NameTagProductVisual() {
 
 function OrganizerProductVisual(){return <div className="product-organizer-image"><img src="/images/beyblade-organizer.png" alt="Black Beyblade X compartment organizer"/></div>}
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  let products=fallbackProducts;
+  try{const catalog=await getShopifyCatalog();if(catalog.length)products=fallbackProducts.map(product=>{const key=product.href==="/name-tag"?"name-tag":product.href==="/beyblade-organizer"?"beyblade-organizer":null;const remote=catalog.find(item=>item.key===key);return remote?{...product,name:remote.title,description:remote.description||product.description,price:Number(remote.priceMin.amount),status:remote.available?"AVAILABLE":"SOLD OUT"}:product})}catch(error){console.error("Using fallback product catalog",error)}
+  const base=process.env.NEXT_PUBLIC_SITE_URL||"http://localhost:3000";const jsonLd={"@context":"https://schema.org","@graph":products.filter(product=>product.href&&product.price).map(product=>({"@type":"Product",name:product.name,description:product.description,url:`${base}${product.href}`,offers:{"@type":"Offer",priceCurrency:"HKD",price:product.price,availability:product.status==="AVAILABLE"?"https://schema.org/InStock":"https://schema.org/OutOfStock"}}))};
   return <main className="landing">
+    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(jsonLd).replace(/</g,"\\u003c")}}/>
     <nav>
       <a className="brand" href="/">THE <span className="brand-accent">ODDMENT</span> CLUB</a>
       <div className="navlinks"><a href="#products">PRODUCTS</a><a href="/about">ABOUT</a><a href="/order-status">ORDER STATUS</a></div>

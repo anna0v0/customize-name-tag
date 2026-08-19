@@ -1,0 +1,2 @@
+import { createHmac,timingSafeEqual } from "node:crypto";
+export function verifyShopifyHmac(raw:string,received:string|null){const secret=process.env.SHOPIFY_WEBHOOK_SECRET||process.env.SHOPIFY_CLIENT_SECRET;if(!secret||!received)return false;const expected=createHmac("sha256",secret).update(raw,"utf8").digest("base64");const left=Buffer.from(expected);const right=Buffer.from(received);return left.length===right.length&&timingSafeEqual(left,right)}
