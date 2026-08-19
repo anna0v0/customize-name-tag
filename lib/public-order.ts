@@ -3,8 +3,9 @@ import { NAME_TAG_UNIT_PRICE, ORDER_CURRENCY } from "./pricing";
 import type { DesignConfig } from "./config";
 import { designSchema } from "./schema";
 import type { OrganizerDesignConfig } from "./organizer";
+import type { StandardProductDesign } from "./cart";
 
-export type PublicDesign=DesignConfig|OrganizerDesignConfig;
+export type PublicDesign=DesignConfig|OrganizerDesignConfig|StandardProductDesign;
 
 export type PublicOrderSummary = {
   orderId:string;

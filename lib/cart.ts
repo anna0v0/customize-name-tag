@@ -1,12 +1,15 @@
 import type { DesignConfig } from "./config";
 import type { OrganizerDesignConfig } from "./organizer";
+import type { z } from "zod";
+import type { standardProductDesignSchema } from "./schema";
 import { NAME_TAG_UNIT_PRICE } from "./pricing";
 import { trackCommerce } from "./analytics";
 
 export const CART_STORAGE_KEY="form-fable-platform-cart-v1";
 export const RECEIPT_STORAGE_KEY="form-fable-order-receipt-v1";
 export const SHOPIFY_PENDING_CHECKOUT_KEY="oddment-shopify-checkout-v1";
-export type CartDesign=DesignConfig|OrganizerDesignConfig;
+export type StandardProductDesign=z.infer<typeof standardProductDesignSchema>;
+export type CartDesign=DesignConfig|OrganizerDesignConfig|StandardProductDesign;
 export type PlatformCartItem={id:string;design:CartDesign;quantity:number};
 
 export function designPrice(design:CartDesign){return "productType" in design?design.price:NAME_TAG_UNIT_PRICE}

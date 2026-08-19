@@ -5,16 +5,20 @@ const moneySchema=z.object({amount:z.string(),currencyCode:z.string()});
 const cartSchema=z.object({id:z.string(),checkoutUrl:z.string().url(),cost:z.object({subtotalAmount:moneySchema,totalAmount:moneySchema})});
 
 export type ShopifyCatalogProduct={
-  key:"name-tag"|"beyblade-organizer";
+  key:string;
+  kind:"name-tag"|"beyblade-organizer"|"standard";
+  id:string;
   title:string;
   handle:string;
   description:string;
   available:boolean;
   priceMin:{amount:string;currencyCode:string};
+  featuredImage:{url:string;altText:string|null}|null;
+  variants:Array<{id:string;title:string;available:boolean;price:{amount:string;currencyCode:string};selectedOptions:Array<{name:string;value:string}>;image:{url:string;altText:string|null}|null}>;
   seo:{title:string|null;description:string|null};
 };
 
-export function shopifyIsConfigured(){return Boolean(process.env.SHOPIFY_STORE_DOMAIN&&process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN&&process.env.SHOPIFY_NAME_TAG_VARIANT_ID&&process.env.SHOPIFY_ORGANIZER_VARIANT_ID)}
+export function shopifyIsConfigured(){return Boolean(process.env.SHOPIFY_STORE_DOMAIN&&process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN)}
 
 function domain(){return String(process.env.SHOPIFY_STORE_DOMAIN||"").replace(/^https?:\/\//,"").replace(/\/$/,"")}
 function apiVersion(){return process.env.SHOPIFY_API_VERSION||"2026-07"}
@@ -76,16 +80,27 @@ async function storefront<T>(query:string,variables:Record<string,unknown>={}):P
   return payload.data;
 }
 
-export function variantIdForDesign(design:CartDesign){return "productType" in design?String(process.env.SHOPIFY_ORGANIZER_VARIANT_ID||""):String(process.env.SHOPIFY_NAME_TAG_VARIANT_ID||"")}
+export function isStandardProduct(design:CartDesign):design is Extract<CartDesign,{productType:"shopify-standard"}>{return "productType" in design&&design.productType==="shopify-standard"}
+export function isOrganizer(design:CartDesign):design is Extract<CartDesign,{productType:"beyblade-organizer"}>{return "productType" in design&&design.productType==="beyblade-organizer"}
+export function variantIdForDesign(design:CartDesign){return isOrganizer(design)?String(process.env.SHOPIFY_ORGANIZER_VARIANT_ID||""):String(process.env.SHOPIFY_NAME_TAG_VARIANT_ID||"")}
 
-export function designSummary(design:CartDesign,designId:string){
+export function designSummary(design:Exclude<CartDesign,{productType:"shopify-standard"}>,designId:string){
   const common=[{key:"Design ID",value:designId},{key:"Template",value:design.templateVersion}];
-  if("productType" in design)return [...common,{key:"Product",value:"Beyblade X Organizer"},{key:"Specification",value:design.name},{key:"Colour",value:design.color}];
+  if(isOrganizer(design))return [...common,{key:"Product",value:"Beyblade X Organizer"},{key:"Specification",value:design.name},{key:"Colour",value:design.color}];
   return [...common,{key:"Product",value:"Custom Name Tag"},{key:"Name",value:design.name},{key:"Typeface",value:design.font},{key:"Base colour",value:design.baseColor},{key:"Face colour",value:design.topColor}];
 }
 
+async function resolveStandardVariant(design:Extract<CartDesign,{productType:"shopify-standard"}>){
+  const data=await storefront<{product:{variants:{nodes:Array<{id:string;title:string;availableForSale:boolean;selectedOptions:Array<{name:string;value:string}>}>}}|null}>(`query StandardProduct($handle:String!){product(handle:$handle){variants(first:100){nodes{id title availableForSale selectedOptions{name value}}}}}`,{handle:design.handle});
+  if(!data.product)throw new Error(`Shopify product “${design.name}” is unavailable.`);
+  const wanted=new Map(design.selectedOptions.map(option=>[option.name,option.value]));
+  const variant=data.product.variants.nodes.find(item=>item.selectedOptions.length===wanted.size&&item.selectedOptions.every(option=>wanted.get(option.name)===option.value));
+  if(!variant||!variant.availableForSale)throw new Error(`The selected “${design.variantTitle}” option is unavailable.`);
+  return variant.id;
+}
+
 export async function createShopifyCart(items:Array<PlatformCartItem&{designId:string}>){
-  const lines=items.map(item=>({merchandiseId:variantIdForDesign(item.design),quantity:item.quantity,attributes:designSummary(item.design,item.designId)}));
+  const lines=await Promise.all(items.map(async item=>isStandardProduct(item.design)?{merchandiseId:await resolveStandardVariant(item.design),quantity:item.quantity,attributes:[{key:"Design ID",value:item.designId},{key:"Product type",value:"Standard product"},{key:"Product handle",value:item.design.handle}]}:{merchandiseId:variantIdForDesign(item.design),quantity:item.quantity,attributes:designSummary(item.design,item.designId)}));
   if(lines.some(line=>!line.merchandiseId))throw new Error("A Shopify product variant is not configured.");
   const data=await storefront<{cartCreate:{cart:unknown;userErrors:Array<{message:string}>}}>(`mutation CreateCart($input:CartInput!){cartCreate(input:$input){cart{id checkoutUrl cost{subtotalAmount{amount currencyCode} totalAmount{amount currencyCode}}} userErrors{message}}}`,{input:{lines}});
   if(data.cartCreate.userErrors.length)throw new Error(data.cartCreate.userErrors[0].message);
@@ -93,11 +108,10 @@ export async function createShopifyCart(items:Array<PlatformCartItem&{designId:s
 }
 
 export async function getShopifyCatalog():Promise<ShopifyCatalogProduct[]>{
-  const ids=[{key:"name-tag" as const,id:process.env.SHOPIFY_NAME_TAG_PRODUCT_ID},{key:"beyblade-organizer" as const,id:process.env.SHOPIFY_ORGANIZER_PRODUCT_ID}].filter(item=>item.id);
-  if(!ids.length||!shopifyIsConfigured())return [];
-  const results=await Promise.all(ids.map(async item=>{
-    const data=await storefront<{product:{title:string;handle:string;description:string;availableForSale:boolean;priceRange:{minVariantPrice:{amount:string;currencyCode:string}};seo:{title:string|null;description:string|null}}|null}>(`query Product($id:ID!){product(id:$id){title handle description availableForSale priceRange{minVariantPrice{amount currencyCode}} seo{title description}}}`,{id:item.id});
-    return data.product?{key:item.key,title:data.product.title,handle:data.product.handle,description:data.product.description,available:data.product.availableForSale,priceMin:data.product.priceRange.minVariantPrice,seo:data.product.seo}:null;
-  }));
-  return results.filter((item):item is ShopifyCatalogProduct=>Boolean(item));
+  if(!shopifyIsConfigured())return [];
+  type Node={id:string;title:string;handle:string;description:string;availableForSale:boolean;featuredImage:{url:string;altText:string|null}|null;priceRange:{minVariantPrice:{amount:string;currencyCode:string}};variants:{nodes:Array<{id:string;title:string;availableForSale:boolean;price:{amount:string;currencyCode:string};selectedOptions:Array<{name:string;value:string}>;image:{url:string;altText:string|null}|null}>};seo:{title:string|null;description:string|null}};
+  const data=await storefront<{products:{nodes:Node[]}}>(`query Catalog{products(first:50,sortKey:CREATED_AT){nodes{id title handle description availableForSale featuredImage{url altText} priceRange{minVariantPrice{amount currencyCode}} variants(first:100){nodes{id title availableForSale price{amount currencyCode} selectedOptions{name value} image{url altText}}} seo{title description}}}}`);
+  return data.products.nodes.map(product=>{const kind=product.id===process.env.SHOPIFY_NAME_TAG_PRODUCT_ID||product.handle==="custom-name-tag"?"name-tag":product.id===process.env.SHOPIFY_ORGANIZER_PRODUCT_ID||product.handle==="beyblade-x-organizer"?"beyblade-organizer":"standard";return {key:kind==="standard"?product.handle:kind,kind,id:product.id,title:product.title,handle:product.handle,description:product.description,available:product.availableForSale,priceMin:product.priceRange.minVariantPrice,featuredImage:product.featuredImage,variants:product.variants.nodes.map(variant=>({...variant,available:variant.availableForSale})),seo:product.seo}});
 }
+
+export async function getShopifyProduct(handle:string){return (await getShopifyCatalog()).find(product=>product.handle===handle)??null}

@@ -7,7 +7,9 @@ export const nameTagDesignSchema = z.object({
   iconContours: z.array(z.object({group:z.number().int().min(0).max(31),hole:z.boolean(),points:z.array(z.object({x:z.number().min(-1.1).max(1.1),y:z.number().min(-1.1).max(1.1)})).min(3).max(2000)})).max(96).optional(), templateVersion: z.literal("1")
 });
 export const organizerDesignSchema=z.object({productType:z.literal("beyblade-organizer"),variant:z.literal("sample-organizer"),name:z.literal("Sample Organizer"),color:z.string().regex(/^#[0-9a-fA-F]{6}$/),width:z.literal(200),depth:z.literal(83.5),height:z.literal(30),price:z.literal(80),templateVersion:z.literal("1")});
-export const designSchema=z.union([nameTagDesignSchema,organizerDesignSchema]);
+export const standardProductDesignSchema=z.object({productType:z.literal("shopify-standard"),handle:z.string().regex(/^[a-z0-9][a-z0-9-]{0,254}$/),name:z.string().min(1).max(255),variantTitle:z.string().min(1).max(255),selectedOptions:z.array(z.object({name:z.string().min(1).max(100),value:z.string().min(1).max(255)})).max(10),imageUrl:z.string().url().optional(),price:z.number().nonnegative(),templateVersion:z.literal("1")});
+export const productionDesignSchema=z.union([nameTagDesignSchema,organizerDesignSchema]);
+export const designSchema=z.union([productionDesignSchema,standardProductDesignSchema]);
 export const orderItemSchema = z.object({ design: designSchema, quantity: z.number().int().min(1).max(100) });
 export const orderSchema = z.object({
   customerName: z.string().min(2).max(80), email: z.string().email(), phone: z.string().min(6).max(30),

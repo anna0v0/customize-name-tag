@@ -3,7 +3,7 @@ import path from "node:path";
 import { firebaseAdminIsConfigured, getFirebaseAdmin } from "./firebase-admin";
 
 export type OrderStatus = "Submitted"|"Generating"|"Pending Review"|"Awaiting Customer Approval"|"Confirmed"|"In Production"|"Completed"|"Manual Review Required"|"Cancelled";
-export type StoredOrderItem = { design:Record<string, unknown>; quantity:number; designId?:string; shopifyLineItemId?:string; modelStatus?:"Queued"|"Generating"|"Ready"|"Failed" };
+export type StoredOrderItem = { design:Record<string, unknown>; quantity:number; designId?:string; shopifyLineItemId?:string; modelStatus?:"Queued"|"Generating"|"Ready"|"Failed"|"Not Required" };
 export type StoredOrder = { id:string; createdAt:string; status:OrderStatus; customerName:string; email:string; phone:string; shippingMethod?:"sf-express"|"local-mail"; shippingLabel?:string; shippingFee?:number; quantity:number; unitPrice?:number; subtotal?:number; totalAmount?:number; currency?:"HKD"; notes:string; design:Record<string, unknown>; items?:StoredOrderItem[]; shopifyOrderId?:string; shopifyOrderName?:string; shopifyAdminUrl?:string; paidAt?:string; paymentStatus?:string };
 export type DesignDraft={id:string;createdAt:string;expiresAt:string;status:"Checkout Pending"|"Paid"|"Expired";cartId?:string;shopifyOrderId?:string;design:Record<string,unknown>};
 
